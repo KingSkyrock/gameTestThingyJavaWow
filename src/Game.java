@@ -5,6 +5,7 @@ import java.awt.Point;
 import java.awt.event.KeyEvent;
 
 import processing.core.PApplet;
+import processing.core.PShape;
 
 
 
@@ -15,6 +16,8 @@ public class Game extends PApplet {
 	private float camCenterX = width/2, camCenterY = height/2, camCenterZ;
 	
 	public static double gravity = 1;
+	
+	public static PShape playerModel;
 	
 	private Player p = new Player(new XYZ(100, 0, -150));
 	public static Level[] levels = {new Level()};
@@ -31,11 +34,12 @@ public class Game extends PApplet {
 	}
 
 	public void setup() {
-		
+		playerModel = loadShape("playerModel.obj");
 	}
 
 	public void draw() { 
 		background(255);
+		lights();
 		
 		if (p != null) {
 			camX = (float) p.getPos().x;

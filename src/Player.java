@@ -78,7 +78,13 @@ public class Player {
 	
 	public void draw(PApplet drawer) {
 		update();
-		body.draw(drawer);
+		drawer.push();
+		drawer.translate((float)pos.x+20, (float)pos.y+20, (float)pos.z);
+		drawer.rotate(PApplet.PI);
+		drawer.scale(320);
+		drawer.shape(Game.playerModel);
+		drawer.pop();
+		//body.draw(drawer);
 	}
 	
 	public XYZ getPos() {
