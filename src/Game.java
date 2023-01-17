@@ -22,6 +22,8 @@ public class Game extends PApplet {
 	public Game() {
 		levels[0].getPlatforms().add(new Platform(new RectBox(new XYZ(400, 300, -300), 200, 200, 200)));
 		levels[0].getPlatforms().add(new Platform(new RectBox(new XYZ(0, 300, -300), 200, 200, 200)));
+		levels[0].getPlatforms().add(new Platform(new RectBox(new XYZ(-200, 100, -300), 200, 200, 200)));
+		levels[0].getPlatforms().add(new Platform(new RectBox(new XYZ(0, 100, -500), 200, 200, 200)));
 	}
 	
 	public void settings() {

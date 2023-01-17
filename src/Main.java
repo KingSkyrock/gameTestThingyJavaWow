@@ -10,7 +10,7 @@ public class Main {
 
 	public static void main(String args[]) {
 		Game drawing = new Game();
-		PApplet.runSketch(new String[]{""}, drawing);
+		PApplet.runSketch(new String[]{"Game"}, drawing);
 		drawing.windowResizable(true);
 	}
 

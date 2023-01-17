@@ -7,42 +7,73 @@ public class Player {
 	private XYZ pos, v = new XYZ(0,0,0);
 	private RectBox body;
 	private boolean jumping = false;
+	private double speed = 5;
 	
 	public Player(XYZ pos) {
 		this.pos = pos;
 		body = new RectBox(pos, 20, 20, 20);
 	}
 	
+	public boolean isColliding(XYZ newPos) {
+		ArrayList<Platform> platforms = Game.levels[0].getPlatforms();
+		for (int i = 0; i < platforms.size(); i++) {
+			if (new RectBox(newPos, 20, 20, 20).intersects(platforms.get(i).getBox())) {
+				return true;
+			}
+		}
+		return false;
+	}
+	
 	public void update() {
+		//Things that the player can collide with
+		ArrayList<Platform> platforms = Game.levels[0].getPlatforms();
+		
 		v.x = 0;
 		v.z = 0;
 		v.y += Game.gravity;
-		move(0, v.y, 0);
-		ArrayList<Platform> platforms = Game.levels[0].getPlatforms();
-		for (int i = 0; i < platforms.size(); i++) {
-			if (platforms.get(i).getBox().intersects(body)) {
-				v.y = 0;
-				move(0, platforms.get(i).getBox().corner1.y - body.corner2.y, 0);
-				jumping = false;
-			}
-		}
+		
 		if (Game.leftPressed) {
-			v.x = -5;
+			v.x = -speed;
 		}
 		if (Game.rightPressed) {
-			v.x = 5;
+			v.x = speed;
 		} 
 		if (Game.upPressed) {
-			v.z = -5;
+			v.z = -speed;
 		}
 		if (Game.downPressed) {
-			v.z = 5;
+			v.z = speed;
 		} 
 		if (Game.spacePressed && !jumping) {
 			v.y = -20;
 			jumping = true;
 		} 
-		move(v.x, 0, v.z);
+		
+		//This is quite a strange way of doing collisions
+		//hopefully wont cause problems in future (it probably will cause problems)
+		for (int i = 0, d = (v.x < 0 ? -1 : 1); i != v.x + d; i += d) {
+			if (!isColliding(new XYZ(pos.x+(v.x-i), pos.y, pos.z))) {
+				v.x = (v.x-i);
+				break;
+			}
+		}
+		for (int i = 0, d = (v.y < 0 ? -1 : 1); i != v.y + d; i += d) {
+			if (!isColliding(new XYZ(pos.x, pos.y+(v.y-i), pos.z))) {
+				v.y = (v.y-i);
+				break;
+			} else if (d > 0){
+				jumping = false;
+			}
+		}
+		for (int i = 0, d = (v.z < 0 ? -1 : 1); i != v.z + d; i += d) {
+			if (!isColliding(new XYZ(pos.x, pos.y, pos.z+(v.z-i)))) {
+				v.z = (v.z-i);
+				break;
+			}
+		}
+
+		move(v.x, v.y, v.z);
+		
 	}
 	
 	public void draw(PApplet drawer) {

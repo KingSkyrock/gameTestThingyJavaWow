@@ -32,9 +32,9 @@ public class RectBox {
 	}
 	
 	public boolean intersects(RectBox other) {
-		return corner1.x <= other.corner2.x && other.corner1.x <= corner2.x
-			&& corner1.y <= other.corner2.y && other.corner1.y <= corner2.y
-			&& corner1.z <= other.corner2.z && other.corner1.z <= corner2.z;
+		return corner1.x < other.corner2.x && other.corner1.x < corner2.x
+			&& corner1.y < other.corner2.y && other.corner1.y < corner2.y
+			&& corner1.z < other.corner2.z && other.corner1.z < corner2.z;
 	}
 
 }
