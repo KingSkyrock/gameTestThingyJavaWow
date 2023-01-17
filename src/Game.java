@@ -42,8 +42,8 @@ public class Game extends PApplet {
 		lights();
 		
 		if (p != null) {
-			camX = (float) p.getPos().x;
-			camCenterX = (float) p.getPos().x;
+			camX = p.getPos().x;
+			camCenterX = p.getPos().x;
 		}
 		
 		camera(camX, camY, camZ, camCenterX, camCenterY, camCenterZ, 0, 1, 0);

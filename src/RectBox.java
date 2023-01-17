@@ -9,7 +9,7 @@ public class RectBox {
 		this.corner2 = corner2;
 	}
 	
-	public RectBox(XYZ corner1, double width, double height, double depth) {
+	public RectBox(XYZ corner1, int width, int height, int depth) {
 		this.corner1 = corner1;
 		this.corner2 = new XYZ(corner1.x + width, corner1.y + height, corner1.z + depth);
 	}
@@ -17,10 +17,10 @@ public class RectBox {
 	public void draw(PApplet drawer) {
 		drawer.push();
 		drawer.fill(128);
-		drawer.translate((float)getCenter().x,(float)getCenter().y,(float)getCenter().z);
-		drawer.box((float)Math.abs(corner1.x-corner2.x),
-				(float)Math.abs(corner1.y-corner2.y),
-				(float)Math.abs(corner1.z-corner2.z));
+		drawer.translate(getCenter().x,getCenter().y,getCenter().z);
+		drawer.box(Math.abs(corner1.x-corner2.x),
+				Math.abs(corner1.y-corner2.y),
+				Math.abs(corner1.z-corner2.z));
 		drawer.pop();
 	
 	}

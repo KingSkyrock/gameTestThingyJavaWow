@@ -7,7 +7,7 @@ public class Player {
 	private XYZ pos, v = new XYZ(0,0,0);
 	private RectBox body;
 	private boolean jumping = false;
-	private double speed = 5;
+	private int speed = 5;
 	
 	public Player(XYZ pos) {
 		this.pos = pos;
@@ -79,7 +79,7 @@ public class Player {
 	public void draw(PApplet drawer) {
 		update();
 		drawer.push();
-		drawer.translate((float)pos.x+20, (float)pos.y+20, (float)pos.z);
+		drawer.translate(pos.x+20, pos.y+20, pos.z);
 		drawer.rotate(PApplet.PI);
 		drawer.scale(320);
 		drawer.shape(Game.playerModel);
@@ -95,7 +95,7 @@ public class Player {
 		return body.getCenter();
 	}
 	
-	public void move(double x, double y, double z) {
+	public void move(int x, int y, int z) {
 		pos.x += x;
 		pos.y += y;
 		pos.z += z;

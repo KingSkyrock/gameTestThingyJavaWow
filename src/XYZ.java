@@ -1,9 +1,9 @@
 
 public class XYZ {
 	
-	public double x, y, z;
+	public int x, y, z;
 	
-	public XYZ(double x, double y, double z) {
+	public XYZ(int x, int y, int z) {
 		this.x = x;
 		this.y = y;
 		this.z = z;
