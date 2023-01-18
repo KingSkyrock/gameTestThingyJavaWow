@@ -61,8 +61,8 @@ public class Game extends PApplet {
 		camPos.y = p.getCenter().y - 40;
 		
 		if (focused) {
-			yaw -= mouseX-width/2;
-			pitch -= mouseY-height/2;
+			yaw -= (mouseX-width/2)*0.5;
+			pitch -= (mouseY-height/2)*0.5;
 			robot.mouseMove(width/2,height/2);
 			if (yaw >= 360)
 				yaw -= 360;
@@ -111,6 +111,10 @@ public class Game extends PApplet {
 			downPressed = true;
 		} else if (keyCode == KeyEvent.VK_SPACE) {
 			spacePressed = true;
+		} else if (keyCode == KeyEvent.VK_R) {
+			camPos = new PVector(0, 0, 0);
+			camCenter = new PVector(0, 0, 0);
+			p = new Player(new PVector(100, 0, -150));
 		}
 	}
 	public void keyReleased() {
