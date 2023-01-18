@@ -47,7 +47,7 @@ public class Game extends PApplet {
 		background(255);
 		lights();
 
-		robot.mouseMove(width/2,height/2);
+		if (focused) robot.mouseMove(width/2,height/2);
 		
 		camPos.x = p.getCenter().x;
 		camPos.z = p.getCenter().z;
