@@ -53,21 +53,20 @@ public class Game extends PApplet {
 		camPos.z = p.getCenter().z;
 		camPos.y = p.getCenter().y - 40;
 		yaw -= mouseX-width/2;
-		pitch += mouseY-height/2;
+		pitch -= mouseY-height/2;
 		
 		if (yaw >= 360)
 			yaw -= 360;
 		if (yaw <= -360)
 			yaw += 360;
-		if (pitch >= 360)
-			pitch = 360;
-		if (pitch <= -360)
-			pitch = -360;
+		if (pitch >= 179)
+			pitch = 179;
+		if (pitch <= 1)
+			pitch = 1;
 		
-		//Not good enough at math to figure out how to do this correctly
-		camCenter.x = sin(radians(yaw)) + camPos.x;
-		camCenter.z = cos(radians(yaw)) + camPos.z;
-		camCenter.y = pitch/90 + camPos.y; //lol
+		camCenter.x = sin(radians(pitch)) * sin(radians(yaw)) + camPos.x;
+		camCenter.z = sin(radians(pitch)) * cos(radians(yaw)) + camPos.z;
+		camCenter.y = cos(radians(pitch)) + camPos.y;
 		
 		float fov = PI/2f;
 		float nearClippingDistance = 0.01f;
