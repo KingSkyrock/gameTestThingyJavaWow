@@ -47,27 +47,29 @@ public class Game extends PApplet {
 		push();
 		background(255);
 		lights();
-		if (focused) robot.mouseMove(width/2,height/2);
 		
 		camPos.x = p.getCenter().x;
 		camPos.z = p.getCenter().z;
 		camPos.y = p.getCenter().y - 40;
-		yaw -= mouseX-width/2;
-		pitch -= mouseY-height/2;
 		
-		if (yaw >= 360)
-			yaw -= 360;
-		if (yaw <= -360)
-			yaw += 360;
-		if (pitch >= 179)
-			pitch = 179;
-		if (pitch <= 1)
-			pitch = 1;
-		
-		camCenter.x = sin(radians(pitch)) * sin(radians(yaw)) + camPos.x;
-		camCenter.z = sin(radians(pitch)) * cos(radians(yaw)) + camPos.z;
-		camCenter.y = cos(radians(pitch)) + camPos.y;
-		
+		if (focused) {
+			yaw -= mouseX-width/2;
+			pitch -= mouseY-height/2;
+			robot.mouseMove(width/2,height/2);
+			if (yaw >= 360)
+				yaw -= 360;
+			if (yaw <= -360)
+				yaw += 360;
+			if (pitch >= 179)
+				pitch = 179;
+			if (pitch <= 1)
+				pitch = 1;
+			
+			camCenter.x = sin(radians(pitch)) * sin(radians(yaw)) + camPos.x;
+			camCenter.z = sin(radians(pitch)) * cos(radians(yaw)) + camPos.z;
+			camCenter.y = cos(radians(pitch)) + camPos.y;
+		}
+
 		float fov = PI/2f;
 		float nearClippingDistance = 0.01f;
 		perspective(fov, (float)(width)/(float)(height), nearClippingDistance, camPos.z*10);

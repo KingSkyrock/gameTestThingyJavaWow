@@ -74,6 +74,9 @@ public class Player {
 			v.y = -20;
 			jumping = true;
 		} 
+		if(!Game.spacePressed && v.y < -10f) {
+			v.y = -10f;
+		}
 		
 		//this collision is so bad
 		//i will eventually fix it someday
