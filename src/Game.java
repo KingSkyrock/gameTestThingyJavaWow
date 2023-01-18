@@ -44,9 +44,9 @@ public class Game extends PApplet {
 	}
 
 	public void draw() { 
+		push();
 		background(255);
 		lights();
-
 		if (focused) robot.mouseMove(width/2,height/2);
 		
 		camPos.x = p.getCenter().x;
@@ -75,6 +75,13 @@ public class Game extends PApplet {
 		camera(camPos.x, camPos.y, camPos.z, camCenter.x, camCenter.y, camCenter.z, 0, 1, 0);
 		levels[0].draw(this);
 		p.draw(this);
+		pop();
+		
+		//HUD
+		hint(DISABLE_DEPTH_TEST);
+		fill(0);
+		circle(width/2, height/2, 10);
+		hint(ENABLE_DEPTH_TEST);
 	}
 	
 	
