@@ -78,31 +78,108 @@ public class Player {
 			v.y = -10f;
 		}
 		
-		//this collision is so bad
-		//i will eventually fix it someday
-		for (int i = 0, d = (v.x < 0 ? -1 : 1); i != v.x + d; i += d) {
-			if (!isColliding(new PVector(pos.x+(v.x-i), pos.y, pos.z))) {
-				v.x = (v.x-i);
-				break;
-			}
-		}
-		for (int i = 0, d = (v.y < 0 ? -1 : 1); i != v.y + d; i += d) {
-			if (!isColliding(new PVector(pos.x, pos.y+(v.y-i), pos.z))) {
-				v.y = (v.y-i);
-				break;
-			} else if (d > 0){
-				jumping = false;
-			}
-		}
-		for (int i = 0, d = (v.z < 0 ? -1 : 1); i != v.z + d; i += d) {
-			if (!isColliding(new PVector(pos.x, pos.y, pos.z+(v.z-i)))) {
-				v.z = (v.z-i);
-				break;
-			}
-		}
-
-		move(v.x, v.y, v.z);
 		
+		//This works for now. There is probably a much better way of doing this
+		float tempX = pos.x, tempY = pos.y, tempZ = pos.z;
+		int[] counts = new int[] {0,0,0,0,0,0};
+		while (isColliding(pos)) {
+			pos.x++;
+			counts[0]++;
+		}
+		pos.x = tempX;
+		while (isColliding(pos)) {
+			pos.x--;
+			counts[1]++;
+		}
+		pos.x = tempX;
+		while (isColliding(pos)) {
+			pos.y++;
+			counts[2]++;
+		}
+		pos.y = tempY;
+		while (isColliding(pos)) {
+			pos.y--;
+			counts[3]++;
+		}
+		pos.y = tempY;
+		while (isColliding(pos)) {
+			pos.z++;
+			counts[4]++;
+		}
+		pos.z = tempZ;
+		while (isColliding(pos)) {
+			pos.z--;
+			counts[5]++;
+		}
+		pos.z = tempZ;
+		int min = Integer.MAX_VALUE;
+		int minIndex = 0;
+		for (int i = 0; i < 6; i++) {
+			if (counts[i] < min) {
+				min = counts[i];
+				minIndex = i;
+			}
+		}
+		
+		switch(minIndex) {
+			case 0:
+				pos.x += counts[minIndex];
+				break;
+			case 1:
+				pos.x -= counts[minIndex];
+				break;
+			case 2:
+				pos.y += counts[minIndex];
+				break;
+			case 3:
+				pos.y -= counts[minIndex];
+				break;
+			case 4:
+				pos.z += counts[minIndex];
+				break;
+			case 5:
+				pos.z -= counts[minIndex];
+				break;
+		}
+		
+		if (isColliding(new PVector(pos.x+v.x, pos.y, pos.z))) {
+			float d = v.x;
+			v.x = 0;
+			pos.x = (int)(pos.x + v.x);
+			while (isColliding(pos)) {
+				if (d < 0) pos.x++;
+				if (d > 0) pos.x--;
+				if (d == 0) break;
+			}
+		} else {
+			move(v.x, 0, 0);
+		}
+		if (isColliding(new PVector(pos.x, pos.y+v.y, pos.z))) {
+			float d = v.y;
+			if (d > 0) jumping = false;
+			v.y = 0;
+			pos.y = (int)(pos.y + v.y);
+			while (isColliding(pos)) {
+				if (d < 0) pos.y++;
+				if (d > 0) pos.y--;
+				if (d == 0) break;
+			}
+		} else {
+			move(0, v.y, 0);
+		}
+		if (isColliding(new PVector(pos.x, pos.y, pos.z+v.z))) {
+			float d = v.z;
+			v.z = 0;
+			pos.z = (int)(pos.z + v.z);
+			while (isColliding(pos)) {
+				if (d < 0) pos.z++;
+				if (d > 0) pos.z--;
+				if (d == 0) break;
+			}
+		} else {
+			move(0, 0, v.z);
+		}
+		body = new RectBox(pos, 20, 20, 20);
 	}
 	
 	public void draw(PApplet drawer) {

@@ -3,7 +3,7 @@ import processing.core.PVector;
 
 public class RectBox {
 	
-	PVector corner1, corner2;
+	private PVector corner1, corner2;
 	
 	public RectBox(PVector corner1, PVector corner2) {
 		this.corner1 = corner1;
@@ -36,6 +36,11 @@ public class RectBox {
 		return corner1.x < other.corner2.x && other.corner1.x < corner2.x
 			&& corner1.y < other.corner2.y && other.corner1.y < corner2.y
 			&& corner1.z < other.corner2.z && other.corner1.z < corner2.z;
+	}
+	
+	public void move(PVector vector) {
+		corner1.add(vector);
+		corner2.add(vector);
 	}
 
 }

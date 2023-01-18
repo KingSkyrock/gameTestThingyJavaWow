@@ -32,6 +32,14 @@ public class Game extends PApplet {
 		levels[0].getPlatforms().add(new Platform(new RectBox(new PVector(0, 300, -300), 200, 200, 200)));
 		levels[0].getPlatforms().add(new Platform(new RectBox(new PVector(-200, 100, -300), 200, 200, 200)));
 		levels[0].getPlatforms().add(new Platform(new RectBox(new PVector(0, 100, -500), 200, 200, 200)));
+		levels[0].getPlatforms().add(
+				new MovingPlatform(
+						new RectBox(
+								new PVector(600, 300, -300), 200, 200, 200
+						), 
+						new PVector(0, -2, 1), 400
+				)
+		);
 	}
 	
 	public void settings() {
@@ -69,7 +77,7 @@ public class Game extends PApplet {
 			camCenter.z = sin(radians(pitch)) * cos(radians(yaw)) + camPos.z;
 			camCenter.y = cos(radians(pitch)) + camPos.y;
 		}
-
+		
 		float fov = PI/2f;
 		float nearClippingDistance = 0.01f;
 		perspective(fov, (float)(width)/(float)(height), nearClippingDistance, camPos.z*10);
@@ -77,6 +85,7 @@ public class Game extends PApplet {
 		camera(camPos.x, camPos.y, camPos.z, camCenter.x, camCenter.y, camCenter.z, 0, 1, 0);
 		levels[0].draw(this);
 		p.draw(this);
+		
 		pop();
 		
 		//HUD
