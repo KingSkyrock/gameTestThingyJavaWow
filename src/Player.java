@@ -31,20 +31,20 @@ public class Player {
 		v.y += Game.gravity;
 		
 		if (Game.leftPressed) {
-			v.z = PApplet.cos(PApplet.radians(Game.pitch + 90)) * speed;
-			v.x = PApplet.sin(PApplet.radians(Game.pitch + 90)) * speed;
+			v.z = PApplet.cos(PApplet.radians(Game.yaw + 90)) * speed;
+			v.x = PApplet.sin(PApplet.radians(Game.yaw + 90)) * speed;
 		}
 		if (Game.rightPressed) {
-			v.z = PApplet.cos(PApplet.radians(Game.pitch - 90)) * speed;
-			v.x = PApplet.sin(PApplet.radians(Game.pitch - 90)) * speed;
+			v.z = PApplet.cos(PApplet.radians(Game.yaw - 90)) * speed;
+			v.x = PApplet.sin(PApplet.radians(Game.yaw - 90)) * speed;
 		} 
 		if (Game.upPressed) {
-			v.z = PApplet.cos(PApplet.radians(Game.pitch)) * speed;
-			v.x = PApplet.sin(PApplet.radians(Game.pitch)) * speed;
+			v.z = PApplet.cos(PApplet.radians(Game.yaw)) * speed;
+			v.x = PApplet.sin(PApplet.radians(Game.yaw)) * speed;
 		}
 		if (Game.downPressed) {
-			v.z = -PApplet.cos(PApplet.radians(Game.pitch)) * speed;
-			v.x = -PApplet.sin(PApplet.radians(Game.pitch)) * speed;
+			v.z = -PApplet.cos(PApplet.radians(Game.yaw)) * speed;
+			v.x = -PApplet.sin(PApplet.radians(Game.yaw)) * speed;
 		} 
 		if (Game.spacePressed && !jumping) {
 			v.y = -20;

@@ -11,7 +11,7 @@ public class Game extends PApplet {
 	public static boolean upPressed, downPressed, leftPressed, rightPressed, spacePressed;
 	private PVector camPos = new PVector(0, 0, 0);
 	private PVector camCenter = new PVector(0, 0, 0);
-	public static float pitch, yaw;
+	public static float yaw, pitch;
 	
 	public static double gravity = 1;
 	
@@ -52,22 +52,22 @@ public class Game extends PApplet {
 		camPos.x = p.getCenter().x;
 		camPos.z = p.getCenter().z;
 		camPos.y = p.getCenter().y - 40;
-		pitch -= mouseX-width/2;
-		yaw += mouseY-height/2;
+		yaw -= mouseX-width/2;
+		pitch += mouseY-height/2;
 		
-		if (pitch >= 360)
-			pitch -= 360;
-		if (pitch <= -360)
-			pitch += 360;
 		if (yaw >= 360)
-			yaw = 360;
+			yaw -= 360;
 		if (yaw <= -360)
-			yaw = -360;
+			yaw += 360;
+		if (pitch >= 360)
+			pitch = 360;
+		if (pitch <= -360)
+			pitch = -360;
 		
 		//Not good enough at math to figure out how to do this correctly
-		camCenter.x = sin(radians(pitch)) + camPos.x;
-		camCenter.z = cos(radians(pitch)) + camPos.z;
-		camCenter.y = yaw/90 + camPos.y; //lol
+		camCenter.x = sin(radians(yaw)) + camPos.x;
+		camCenter.z = cos(radians(yaw)) + camPos.z;
+		camCenter.y = pitch/90 + camPos.y; //lol
 		
 		float fov = PI/2f;
 		float nearClippingDistance = 0.01f;
