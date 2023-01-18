@@ -29,23 +29,47 @@ public class Player {
 		v.x = 0;
 		v.z = 0;
 		v.y += Game.gravity;
+		int directionsPressed = 0;
+		if (Game.leftPressed) directionsPressed++;
+		if (Game.rightPressed) directionsPressed++;
+		if (Game.upPressed) directionsPressed++;
+		if (Game.downPressed) directionsPressed++;
 		
-		if (Game.leftPressed) {
-			v.z = PApplet.cos(PApplet.radians(Game.yaw + 90)) * speed;
-			v.x = PApplet.sin(PApplet.radians(Game.yaw + 90)) * speed;
+		if (directionsPressed <= 2) {
+			if (Game.leftPressed) {
+				v.z += (PApplet.cos(PApplet.radians(Game.yaw + 90)) * speed);
+				v.x += (PApplet.sin(PApplet.radians(Game.yaw + 90)) * speed);
+				if (Game.upPressed || Game.downPressed) {
+					v.z *= Math.sqrt(2)/2;
+					v.x *= Math.sqrt(2)/2;
+				}
+			}
+			if (Game.rightPressed) {
+				v.z += (PApplet.cos(PApplet.radians(Game.yaw - 90)) * speed);
+				v.x += (PApplet.sin(PApplet.radians(Game.yaw - 90)) * speed);
+				if (Game.upPressed || Game.downPressed) {
+					v.z *= Math.sqrt(2)/2;
+					v.x *= Math.sqrt(2)/2;
+				}
+			} 
+			if (Game.upPressed) {
+				v.z += (PApplet.cos(PApplet.radians(Game.yaw)) * speed);
+				v.x += (PApplet.sin(PApplet.radians(Game.yaw)) * speed);
+				if (Game.leftPressed || Game.rightPressed) {
+					v.z *= Math.sqrt(2)/2;
+					v.x *= Math.sqrt(2)/2;
+				}
+			}
+			if (Game.downPressed) {
+				v.z += (-PApplet.cos(PApplet.radians(Game.yaw)) * speed);
+				v.x += (-PApplet.sin(PApplet.radians(Game.yaw)) * speed);
+				if (Game.leftPressed || Game.rightPressed) {
+					v.z *= Math.sqrt(2)/2;
+					v.x *= Math.sqrt(2)/2;
+				}
+			} 
 		}
-		if (Game.rightPressed) {
-			v.z = PApplet.cos(PApplet.radians(Game.yaw - 90)) * speed;
-			v.x = PApplet.sin(PApplet.radians(Game.yaw - 90)) * speed;
-		} 
-		if (Game.upPressed) {
-			v.z = PApplet.cos(PApplet.radians(Game.yaw)) * speed;
-			v.x = PApplet.sin(PApplet.radians(Game.yaw)) * speed;
-		}
-		if (Game.downPressed) {
-			v.z = -PApplet.cos(PApplet.radians(Game.yaw)) * speed;
-			v.x = -PApplet.sin(PApplet.radians(Game.yaw)) * speed;
-		} 
+		
 		if (Game.spacePressed && !jumping) {
 			v.y = -20;
 			jumping = true;
