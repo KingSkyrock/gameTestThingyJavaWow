@@ -1,20 +1,21 @@
 import java.util.ArrayList;
 
 import processing.core.PApplet;
+import processing.core.PVector;
 
 public class Player {
 	
-	private XYZ pos, v = new XYZ(0,0,0);
+	private PVector pos, v = new PVector(0,0,0);
 	private RectBox body;
 	private boolean jumping = false;
 	private int speed = 5;
 	
-	public Player(XYZ pos) {
+	public Player(PVector pos) {
 		this.pos = pos;
 		body = new RectBox(pos, 20, 20, 20);
 	}
 	
-	public boolean isColliding(XYZ newPos) {
+	public boolean isColliding(PVector newPos) {
 		ArrayList<Platform> platforms = Game.levels[0].getPlatforms();
 		for (int i = 0; i < platforms.size(); i++) {
 			if (new RectBox(newPos, 20, 20, 20).intersects(platforms.get(i).getBox())) {
@@ -25,40 +26,41 @@ public class Player {
 	}
 	
 	public void update() {
-		//Things that the player can collide with
-		ArrayList<Platform> platforms = Game.levels[0].getPlatforms();
-		
 		v.x = 0;
 		v.z = 0;
 		v.y += Game.gravity;
 		
 		if (Game.leftPressed) {
-			v.x = -speed;
+			v.z = PApplet.cos(PApplet.radians(Game.pitch + 90)) * speed;
+			v.x = PApplet.sin(PApplet.radians(Game.pitch + 90)) * speed;
 		}
 		if (Game.rightPressed) {
-			v.x = speed;
+			v.z = PApplet.cos(PApplet.radians(Game.pitch - 90)) * speed;
+			v.x = PApplet.sin(PApplet.radians(Game.pitch - 90)) * speed;
 		} 
 		if (Game.upPressed) {
-			v.z = -speed;
+			v.z = PApplet.cos(PApplet.radians(Game.pitch)) * speed;
+			v.x = PApplet.sin(PApplet.radians(Game.pitch)) * speed;
 		}
 		if (Game.downPressed) {
-			v.z = speed;
+			v.z = -PApplet.cos(PApplet.radians(Game.pitch)) * speed;
+			v.x = -PApplet.sin(PApplet.radians(Game.pitch)) * speed;
 		} 
 		if (Game.spacePressed && !jumping) {
 			v.y = -20;
 			jumping = true;
 		} 
 		
-		//This is quite a strange way of doing collisions
-		//hopefully wont cause problems in future (it probably will cause problems)
+		//this collision is so bad
+		//i will eventually fix it someday
 		for (int i = 0, d = (v.x < 0 ? -1 : 1); i != v.x + d; i += d) {
-			if (!isColliding(new XYZ(pos.x+(v.x-i), pos.y, pos.z))) {
+			if (!isColliding(new PVector(pos.x+(v.x-i), pos.y, pos.z))) {
 				v.x = (v.x-i);
 				break;
 			}
 		}
 		for (int i = 0, d = (v.y < 0 ? -1 : 1); i != v.y + d; i += d) {
-			if (!isColliding(new XYZ(pos.x, pos.y+(v.y-i), pos.z))) {
+			if (!isColliding(new PVector(pos.x, pos.y+(v.y-i), pos.z))) {
 				v.y = (v.y-i);
 				break;
 			} else if (d > 0){
@@ -66,7 +68,7 @@ public class Player {
 			}
 		}
 		for (int i = 0, d = (v.z < 0 ? -1 : 1); i != v.z + d; i += d) {
-			if (!isColliding(new XYZ(pos.x, pos.y, pos.z+(v.z-i)))) {
+			if (!isColliding(new PVector(pos.x, pos.y, pos.z+(v.z-i)))) {
 				v.z = (v.z-i);
 				break;
 			}
@@ -84,29 +86,28 @@ public class Player {
 		drawer.scale(320);
 		drawer.shape(Game.playerModel);
 		drawer.pop();
-		//body.draw(drawer);
 	}
 	
-	public XYZ getPos() {
+	public PVector getPos() {
 		return pos;
 	}
 	
-	public XYZ getCenter() {
+	public PVector getCenter() {
 		return body.getCenter();
 	}
 	
-	public void move(int x, int y, int z) {
+	public void move(float x, float y, float z) {
 		pos.x += x;
 		pos.y += y;
 		pos.z += z;
 		body = new RectBox(pos, 20, 20, 20);
 	}
 	
-	public XYZ getV() {
+	public PVector getV() {
 		return v;
 	}
 	
-	public void setV(XYZ newV) {
+	public void setV(PVector newV) {
 		v = newV;
 	}
 }
