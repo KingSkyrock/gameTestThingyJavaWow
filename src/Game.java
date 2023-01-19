@@ -13,13 +13,11 @@ public class Game extends PApplet {
 	public static boolean upPressed, downPressed, leftPressed, rightPressed, spacePressed;
 	private PVector camPos = new PVector(0, 0, 0);
 	private PVector camCenter = new PVector(0, 0, 0);
+	private float sensitivity = 0.5f;
 	private Point mouseCoords;
 	public static float yaw, pitch;
-	
 	public static double gravity = 1;
-	
 	private Robot robot;
-	
 	public static PShape playerModel;
 	
 	private Player p = new Player(new PVector(100, 0, -150));
@@ -68,8 +66,8 @@ public class Game extends PApplet {
 		
 		if (focused) {
 			Point mousePos = MouseInfo.getPointerInfo().getLocation();
-			yaw -= mousePos.x-(int)mouseCoords.x;
-			pitch -= mousePos.y-(int)mouseCoords.y;
+			yaw -= sensitivity * (mousePos.x-(int)mouseCoords.x);
+			pitch -= sensitivity * (mousePos.y-(int)mouseCoords.y);
 			robot.mouseMove((int)mouseCoords.x,(int)mouseCoords.y);
 			if (yaw >= 360)
 				yaw -= 360;
