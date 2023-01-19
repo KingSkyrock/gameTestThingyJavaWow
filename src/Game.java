@@ -1,5 +1,7 @@
 import java.awt.Robot;
 import java.awt.AWTException;
+import java.awt.MouseInfo;
+import java.awt.Point;
 import java.awt.event.KeyEvent;
 
 import processing.core.PApplet;
@@ -11,6 +13,7 @@ public class Game extends PApplet {
 	public static boolean upPressed, downPressed, leftPressed, rightPressed, spacePressed;
 	private PVector camPos = new PVector(0, 0, 0);
 	private PVector camCenter = new PVector(0, 0, 0);
+	private Point mouseCoords;
 	public static float yaw, pitch;
 	
 	public static double gravity = 1;
@@ -43,12 +46,15 @@ public class Game extends PApplet {
 	}
 	
 	public void settings() {
+		pixelDensity(displayDensity());
 		fullScreen(P3D);
 	}
 
 	public void setup() {
 		playerModel = loadShape("playerModel.obj");
 		noCursor();
+		mouseCoords = new Point((int)displayWidth/2, (int)displayHeight/2);
+		robot.mouseMove((int)mouseCoords.x,(int)mouseCoords.y);
 	}
 
 	public void draw() { 
@@ -61,9 +67,10 @@ public class Game extends PApplet {
 		camPos.y = p.getCenter().y - 40;
 		
 		if (focused) {
-			yaw -= mouseX-width/2;
-			pitch -= mouseY-height/2;
-			robot.mouseMove(width/2,height/2);
+			Point mousePos = MouseInfo.getPointerInfo().getLocation();
+			yaw -= mousePos.x-(int)mouseCoords.x;
+			pitch -= mousePos.y-(int)mouseCoords.y;
+			robot.mouseMove((int)mouseCoords.x,(int)mouseCoords.y);
 			if (yaw >= 360)
 				yaw -= 360;
 			if (yaw <= -360)
@@ -80,7 +87,7 @@ public class Game extends PApplet {
 		
 		float fov = PI/2f;
 		float nearClippingDistance = 0.01f;
-		perspective(fov, (float)(width)/(float)(height), nearClippingDistance, camPos.z*10);
+		perspective(fov, (float)(width)/(float)(height), nearClippingDistance, camPos.z*100);
 		
 		camera(camPos.x, camPos.y, camPos.z, camCenter.x, camCenter.y, camCenter.z, 0, 1, 0);
 		levels[0].draw(this);
